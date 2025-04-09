@@ -12,7 +12,8 @@ const db = mysql.createConnection({
     password:"",
     database:"empleados_crud"
 });
-
+//--------------------------------------------------
+//metodo post
 app.post("/create",(req,res)=>{
     const nombre = req.body.nombre;
     const edad = req.body.edad;
@@ -30,7 +31,39 @@ app.post("/create",(req,res)=>{
     }
     );
 });
+//--------------------------------------------------
+//metodo get
+app.get("/empleados",(req,res)=>{
+    db.query('SELECT * FROM empleados',
+    (err,result) =>{
+        if(err){
+            console.log(err);
+        }else{
+            res.send(result);
+        }
+    }
+    );
+});
+//--------------------------------------------------
+//metodo update
+app.put("/update",(req,res)=>{
+    const id = req.body.id;
+    const nombre = req.body.nombre;
+    const edad = req.body.edad;
+    const pais = req.body.pais;
+    const cargo = req.body.cargo;
+    const anios = req.body.anios;
 
+    db.query('UPDATE empleados SET nombre = ?,edad = ?,pais = ?,cargo = ?,anios = ? WHERE id =?)',[id,nombre,edad,pais,cargo,anios],
+    (err,result) =>{
+        if(err){
+            console.log(err);
+        }else{
+            res.send("Empleado actualizado con exito¡¡");
+        }
+    }
+    );
+});
 app.listen(3001,()=>{
-    console.log("Corriendo en el puerto 3001")
+    console.log("Corriendo en el puerto 3001");
 })
